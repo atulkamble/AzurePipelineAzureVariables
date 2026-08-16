@@ -1,1 +1,15 @@
+trigger:
+  - main 
 
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  appname: 'myapp'
+  environment: 'production'
+  
+steps: 
+  | script:
+    echo "my application is ${appname}"
+    echo "my environment is ${environment}"
+      
