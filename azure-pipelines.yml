@@ -9,6 +9,9 @@ variables:
   environment: 'production'
   country: 'India'
 
+parameters:
+  - accountName: 'myaccount'  
+
 steps:
   - script: |
       echo "My application is $(appname)"
@@ -18,3 +21,4 @@ steps:
       echo "My Build ID is $(Build.BuildNumber)"
       echo "My Build Source Branch is $(Build.SourceBranch)"
       echo "My Build Repo is $(Build.Repository.Name)"
+      echo "My account name is ${{ parameters.accountName }}"
