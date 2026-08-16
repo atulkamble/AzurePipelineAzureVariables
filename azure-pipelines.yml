@@ -4,29 +4,27 @@ trigger:
 pool:
   vmImage: "ubuntu-latest"
 
-job:
-  job: "DisplayVariablesDev"
-  displayName: "Display Dev Variables" 
+jobs:
+  - job: DisplayVariablesDev
+    displayName: "Display Dev Variables"
 
-variables:
-  - group: "dev-var"
-  - group: "prod-var"
+    variables:
+      - group: "dev-var"
 
-steps:
-  - script: |
-      echo "My application is $(appname)"
-      echo "My environment is $(environment)"
-    displayName: "Display Variables"
+    steps:
+      - script: |
+          echo "My application is $(appname)"
+          echo "My environment is $(environment)"
+        displayName: "Display Dev Variables"
 
-job:
-  job: "DisplayVariablesProd"
-  displayName: "Display Prod Variables" 
-  
-  variables:
-  - group: "prod-var"    
+  - job: DisplayVariablesProd
+    displayName: "Display Prod Variables"
 
-steps:
-  - script: |
-      echo "My application is $(appname)"
-      echo "My environment is $(environment)"
-    displayName: "Display Variables"  
+    variables:
+      - group: "prod-var"
+
+    steps:
+      - script: |
+          echo "My application is $(appname)"
+          echo "My environment is $(environment)"
+        displayName: "Display Prod Variables"
