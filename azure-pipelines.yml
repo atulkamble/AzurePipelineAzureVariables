@@ -28,3 +28,29 @@ jobs:
           echo "My application is $(appname)"
           echo "My environment is $(environment)"
         displayName: "Display Prod Variables"
+
+    stage:
+      - stage: BuildAndPushDockerImage
+        displayName: "Build Docker Image"
+        jobs:
+          - job: BuildAndPush
+            displayName: "Build and Push Docker Image"
+
+            steps:
+              - script: |
+                  docker build -t myapp:$(Build.BuildId) .
+                  docker tag myapp:$(Build.BuildId) docker.io/atuljkamble/myapp:$(Build.BuildId)
+                  echo "Docker image built and tagged successfully."
+                displayName: "Build Docker Image"
+
+   stage: Docker Image listing
+      - stage: ListDockerImages
+        displayName: "List Docker Images"
+        jobs:
+          - job: ListImages
+            displayName: "List Docker Images"
+            
+            steps:
+              - script: |
+                  docker images
+                displayName: "List Docker Images"
