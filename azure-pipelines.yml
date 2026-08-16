@@ -4,6 +4,10 @@ trigger:
 pool:
   vmImage: "ubuntu-latest"
 
+job:
+  job: "DisplayVariablesDev"
+  displayName: "Display Dev Variables" 
+
 variables:
   - group: "dev-var"
   - group: "prod-var"
@@ -14,7 +18,11 @@ steps:
       echo "My environment is $(environment)"
     displayName: "Display Variables"
 
-variables:
+job:
+  job: "DisplayVariablesProd"
+  displayName: "Display Prod Variables" 
+  
+  variables:
   - group: "prod-var"    
 
 steps:
