@@ -1,0 +1,2 @@
+# AzurePipelineAzureVariables
+Testing Variables
