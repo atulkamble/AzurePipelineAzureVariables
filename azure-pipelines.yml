@@ -13,3 +13,12 @@ steps:
       echo "My application is $(appname)"
       echo "My environment is $(environment)"
     displayName: "Display Variables"
+
+variables:
+  - group: "prod-var"    
+
+steps:
+  - script: |
+      echo "My application is $(appname)"
+      echo "My environment is $(environment)"
+    displayName: "Display Variables"  
