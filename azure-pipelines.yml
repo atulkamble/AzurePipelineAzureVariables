@@ -4,53 +4,63 @@ trigger:
 pool:
   vmImage: "ubuntu-latest"
 
-jobs:
-  - job: DisplayVariablesDev
-    displayName: "Display Dev Variables"
+stages:
 
-    variables:
-      - group: "dev-var"
+# ==========================================
+# Stage 1: Display Variables
+# ==========================================
+- stage: DisplayVariables
+  displayName: "Display Variables"
 
-    steps:
-      - script: |
-          echo "My application is $(appname)"
-          echo "My environment is $(environment)"
-        displayName: "Display Dev Variables"
+  jobs:
 
-  - job: DisplayVariablesProd
-    displayName: "Display Prod Variables"
+    # Dev Job
+    - job: DisplayVariablesDev
+      displayName: "Display Dev Variables"
 
-    variables:
-      - group: "prod-var"
+      variables:
+        - group: "dev-var"
 
-    steps:
-      - script: |
-          echo "My application is $(appname)"
-          echo "My environment is $(environment)"
-        displayName: "Display Prod Variables"
+      steps:
+        - script: |
+            echo "My application is $(appname)"
+            echo "My environment is $(environment)"
+          displayName: "Display Dev Variables"
 
-    stage:
-      - stage: BuildAndPushDockerImage
-        displayName: "Build Docker Image"
-        jobs:
-          - job: BuildAndPush
-            displayName: "Build and Push Docker Image"
 
-            steps:
-              - script: |
-                  docker build -t myapp:$(Build.BuildId) .
-                  docker tag myapp:$(Build.BuildId) docker.io/atuljkamble/myapp:$(Build.BuildId)
-                  echo "Docker image built and tagged successfully."
-                displayName: "Build Docker Image"
+    # Prod Job
+    - job: DisplayVariablesProd
+      displayName: "Display Prod Variables"
 
-   stage: Docker Image listing
-      - stage: ListDockerImages
-        displayName: "List Docker Images"
-        jobs:
-          - job: ListImages
-            displayName: "List Docker Images"
-            
-            steps:
-              - script: |
-                  docker images
-                displayName: "List Docker Images"
+      variables:
+        - group: "prod-var"
+
+      steps:
+        - script: |
+            echo "My application is $(appname)"
+            echo "My environment is $(environment)"
+          displayName: "Display Prod Variables"
+
+
+# ==========================================
+# Stage 2: Build Docker Image
+# ==========================================
+- stage: BuildDockerImage
+  displayName: "Build Docker Image"
+  dependsOn: DisplayVariables
+
+  jobs:
+    - job: BuildDocker
+      displayName: "Build Docker Image"
+
+      steps:
+        - script: |
+            docker build -t myapp:$(Build.BuildId) .
+            docker tag myapp:$(Build.BuildId) docker.io/atuljkamble/myapp:$(Build.BuildId)
+            echo "Docker image built and tagged successfully."
+          displayName: "Build and Tag Docker Image"
+
+        - script: |
+            echo "Docker Images:"
+            docker images
+          displayName: "List Docker Images"
