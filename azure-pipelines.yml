@@ -9,7 +9,6 @@ variables:
   environment: 'production'
   
 steps: 
-  | script:
+  - script: |
     echo "my application is ${appname}"
     echo "my environment is ${environment}"
-      
